@@ -6,6 +6,11 @@ void threadFunctionEven() {
     std::cout << "Even thread\n";
 }
 
+void threadFunctionOdd() {
+    std::this_thread::sleep_for(std::chrono::milliseconds(1)); // simulate work
+    std::cout << "Odd thread\n";
+}
+
 int main() {
     // ensure that main does not return before the threads are finished
     std::this_thread::sleep_for(std::chrono::milliseconds(1)); // simulate work
