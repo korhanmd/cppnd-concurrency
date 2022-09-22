@@ -12,6 +12,11 @@ void threadFunctionOdd() {
 }
 
 int main() {
+    for (int i = 0; i < 6; i++) {
+        std::thread t((i % 2) ? threadFunctionOdd : threadFunctionEven);
+        t.detach();
+    }
+
     // ensure that main does not return before the threads are finished
     std::this_thread::sleep_for(std::chrono::milliseconds(1)); // simulate work
 
