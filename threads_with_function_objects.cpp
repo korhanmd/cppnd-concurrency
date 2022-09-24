@@ -3,9 +3,12 @@
 
 class Vehicle {
 public:
+    Vehicle(int id) : _id{id} {}
     void operator()() {
-        std::cout << "Vehicle object has been created \n" << std::endl;
+        std::cout << "Vehicle #" << _id << " has been created" << std::endl;
     }
+private:
+    int _id;
 };
 
 int main() {
