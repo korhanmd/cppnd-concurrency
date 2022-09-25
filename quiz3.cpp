@@ -9,6 +9,7 @@ public:
     // TODO: Modify the Vehicle class as indicated in the instructions on the left.
 private:
     int _id;
+    std::string _name;
 };
 
 int main() {
