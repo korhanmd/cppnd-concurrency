@@ -17,12 +17,11 @@ int main() {
     // create thread
     std::shared_ptr<Vehicle> v(new Vehicle);
     std::thread t = std::thread(&Vehicle::addID, v, 1); // call member function on object v
-    
-    // TODO: Modify the main to start setName as a thread.
-    // Also, add code to main to print the name of the vehicle.
-    
+    std::thread t2 = std::thread(&Vehicle::setName, v, "car");
+
     // wait for thread to finish
     t.join();
+    t2.join();
     
     // print Vehicle id
     v->printID();
