@@ -25,6 +25,7 @@ int main() {
     
     // print Vehicle id
     v->printID();
+    v->printName();
     
     return 0;
 }
