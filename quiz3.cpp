@@ -5,8 +5,9 @@ class Vehicle {
 public:
     Vehicle() : _id(0) {}
     void addID(int id) { _id = id; }
+    void setName(std::string name) { _name = name; }
     void printID() { std::cout << "Vehicle ID=" << _id << std::endl; }
-    // TODO: Modify the Vehicle class as indicated in the instructions on the left.
+    void printName() { std::cout << "Vehicle name=" << _name << std::endl; }
 private:
     int _id;
     std::string _name;
