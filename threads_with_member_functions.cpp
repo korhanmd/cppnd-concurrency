@@ -12,17 +12,14 @@ private:
 
 int main() {
     // create thread
-    Vehicle v1, v2;
-    std::thread t1 = std::thread(&Vehicle::addID, v1, 1); // call member function on object v1
-    std::thread t2 = std::thread(&Vehicle::addID, &v2, 2); // call member function on object v2 
+    std::shared_ptr<Vehicle> v(new Vehicle);
+    std::thread t = std::thread(&Vehicle::addID, v, 1); // call member function on object v
 
     // wait for thread to finish
-    t1.join();
-    t2.join();
+    t.join();
 
     // print Vehicle id
-    v1.printID();
-    v2.printID();
+    v->printID();
 
     return 0;
 }
