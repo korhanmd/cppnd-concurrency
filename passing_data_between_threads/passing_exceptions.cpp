@@ -21,7 +21,7 @@ int main() {
     
     // use async to start a task
     double num = 42.0, denom = 2.0;
-    std::future<double> ftr = std::async(divideByNumber, num, denom);
+    std::future<double> ftr = std::async(std::launch::deferred, divideByNumber, num, denom);
 
     // retrieve result within try-catch block
     try {
