@@ -5,6 +5,9 @@
 #include <memory>
 
 double divideByNumber(double num, double denom) {
+    // print system id of worker thread
+    std::cout << "Worker thread id = " << std::this_thread::get_id() << std::endl;
+
     std::this_thread::sleep_for(std::chrono::milliseconds(500)); // simulate work
     
     if (denom == 0) throw std::runtime_error("Exception from thread: Division by zero!");
@@ -13,6 +16,9 @@ double divideByNumber(double num, double denom) {
 }
 
 int main() {
+    // print system id of main thread
+    std::cout << "Main thread id = " << std::this_thread::get_id() << std::endl;
+    
     // use async to start a task
     double num = 42.0, denom = 2.0;
     std::future<double> ftr = std::async(divideByNumber, num, denom);
