@@ -55,11 +55,8 @@ int main() {
 
     // read and write name in different threads
     std::future<void> ftr = std::async([](Vehicle v) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(500)); // simulate work
         v.setName("Vehicle 2");
-    }, v0);
-
-    v0.setName("Vehicle 3");
+    }, std::move(v0));
 
     ftr.wait();
     std::cout << v0.getName() << std::endl;
