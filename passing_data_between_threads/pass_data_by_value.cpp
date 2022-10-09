@@ -1,6 +1,7 @@
 #include <iostream>
 #include <thread>
 #include <future>
+#include <memory>
 
 class Vehicle {
 public:
@@ -13,18 +14,6 @@ public:
     Vehicle(int id, std::string name) : _id(id), _name(new std::string(name)) {
         std::cout << "Vehicle #" << _id << " Initializing constructor called" << std::endl;
     }
-
-    // copy constructor
-    Vehicle(Vehicle const &src) {
-        _id = src._id;
-
-        if (src._name != nullptr) {
-            _name = new std::string;
-            *_name = *src._name;
-        }
-
-        std::cout << "Vehicle #" << _id << " copy constructor called" << std::endl;
-    };
 
     // move constructor
     Vehicle(Vehicle &&src) {
@@ -45,7 +34,7 @@ public:
 
 private:
     int _id;
-    std::string *_name;
+    std::unique_ptr<std::string> _name;
 };
 
 int main() {
