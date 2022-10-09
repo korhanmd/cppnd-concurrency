@@ -26,6 +26,17 @@ public:
         std::cout << "Vehicle #" << _id << " copy constructor called" << std::endl;
     };
 
+    // move constructor
+    Vehicle(Vehicle &&src) {
+        _id = src.getID();
+        _name = new std::string(src.getName());
+
+        src.setID(0);
+        src.setName("Default Name");
+
+        std::cout << "Vehicle #" << _id << " move constructor called" << std::endl;
+    };
+
     // setter and getter
     void setID(int id) { _id = id; }
     int getID() { return _id; }
