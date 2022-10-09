@@ -14,6 +14,18 @@ public:
         std::cout << "Vehicle #" << _id << " Initializing constructor called" << std::endl;
     }
 
+    // copy constructor
+    Vehicle(Vehicle const &src) {
+        _id = src._id;
+
+        if (src._name != nullptr) {
+            _name = new std::string;
+            *_name = *src._name;
+        }
+
+        std::cout << "Vehicle #" << _id << " copy constructor called" << std::endl;
+    };
+
     // setter and getter
     void setID(int id) { _id = id; }
     int getID() { return _id; }
