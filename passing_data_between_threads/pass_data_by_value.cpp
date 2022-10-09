@@ -15,13 +15,11 @@ public:
         std::cout << "Vehicle #" << _id << " Initializing constructor called" << std::endl;
     }
 
-    // move constructor
-    Vehicle(Vehicle &&src) {
+    // move constructor with unique pointer
+    Vehicle(Vehicle &&src) : _name(std::move(src._name)) {
+        // move id to this and reset id in source
         _id = src.getID();
-        _name = new std::string(src.getName());
-
         src.setID(0);
-        src.setName("Default Name");
 
         std::cout << "Vehicle #" << _id << " move constructor called" << std::endl;
     };
