@@ -23,9 +23,9 @@ void WaitingVehicles::pushBack(std::shared_ptr<Vehicle> vehicle, std::promise<vo
 
 void WaitingVehicles::permitEntryToFirstInQueue()
 {
-    // L2.3 : First, get the entries from the front of _promises and _vehicles. 
-    // Then, fulfill promise and send signal back that permission to enter has been granted.
-    // Finally, remove the front elements from both queues. 
+    // Get the entries from the front of _promises and _vehicles 
+    auto vehicle = _vehicles.begin();
+    auto promise = _promises.begin();
 }
 
 /* Implementation of class "Intersection" */
