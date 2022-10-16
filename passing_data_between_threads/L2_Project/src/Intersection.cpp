@@ -29,6 +29,10 @@ void WaitingVehicles::permitEntryToFirstInQueue()
 
     // Fulfill promise and send signal back that permission to enter has been granted
     promise->set_value();
+
+    // Remove the front elements from both queues. 
+    _vehicles.erase(vehicle);
+    _promises.erase(promise);
 }
 
 /* Implementation of class "Intersection" */
