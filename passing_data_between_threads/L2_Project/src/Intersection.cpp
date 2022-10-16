@@ -26,6 +26,9 @@ void WaitingVehicles::permitEntryToFirstInQueue()
     // Get the entries from the front of _promises and _vehicles 
     auto vehicle = _vehicles.begin();
     auto promise = _promises.begin();
+
+    // Fulfill promise and send signal back that permission to enter has been granted
+    promise->set_value();
 }
 
 /* Implementation of class "Intersection" */
