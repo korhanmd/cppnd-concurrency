@@ -67,6 +67,9 @@ void Intersection::addVehicleToQueue(std::shared_ptr<Vehicle> vehicle)
 
     _waitingVehicles.pushBack(vehicle, std::move(prms));
 
+    // Wait until the vehicle has been granted entry
+    ftr.wait();
+
     std::cout << "Intersection #" << _id << ": Vehicle #" << vehicle->getID() << " is granted entry." << std::endl;
 }
 
