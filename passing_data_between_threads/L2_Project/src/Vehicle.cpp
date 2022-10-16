@@ -77,6 +77,9 @@ void Vehicle::drive()
                 // Start up the task
                 auto ftrEntryGranted = std::async(&Intersection::addVehicleToQueue, _currDestination, get_shared_this());
 
+                // Wait for the data to be available before proceeding to slow down
+                ftrEntryGranted.get();
+
                 // slow down and set intersection flag
                 _speed /= 10.0;
                 hasEnteredIntersection = true;
