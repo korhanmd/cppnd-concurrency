@@ -2,6 +2,7 @@
 #include <thread>
 #include <vector>
 #include <future>
+#include <mutex>
 #include <algorithm>
 
 class Vehicle {
@@ -31,6 +32,7 @@ public:
 
 private:
     std::vector<Vehicle> _vehicles; // list of all vehicles waiting to enter this intersection
+    std::mutex _mutex;
     int _tmpVehicles;
 };
 
