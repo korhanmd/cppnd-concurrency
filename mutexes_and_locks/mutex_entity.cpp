@@ -15,25 +15,25 @@ private:
 
 class WaitingVehicles {
 public:
-    WaitingVehicles() : _tmpVehicles(0) {}
+    WaitingVehicles() {}
     
     // getters / setters
     void printSize() {
-        std::cout << "#vehicles = " << _tmpVehicles << std::endl;
+        _mutex.lock();
+        std::cout << "#vehicles = " << _vehicles.size() << std::endl;
+        _mutex.unlock();
     }
 
     // typical behaviour methods
     void pushBack(Vehicle &&v) {
-        // vehicles.push_back(std::move(v)); // data race would cause an exception
-        int oldNum = _tmpVehicles;
-        std::this_thread::sleep_for(std::chrono::microseconds(1)); // wait deliberately to expose the data race
-        _tmpVehicles = oldNum + 1;
+        _mutex.lock();
+        _vehicles.emplace_back(std::move(v)); // data race would cause an exception
+        _mutex.unlock();
     }
 
 private:
     std::vector<Vehicle> _vehicles; // list of all vehicles waiting to enter this intersection
     std::mutex _mutex;
-    int _tmpVehicles;
 };
 
 int main() {
