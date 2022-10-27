@@ -8,6 +8,7 @@
 class Vehicle {
 public:
     Vehicle(int id) : _id{id} {}
+    int getID() { return _id; }
 
 private:
     int _id;
@@ -33,7 +34,7 @@ public:
                 break;
             }
             else {
-                std::cout << "Error! Vehicle could not be added to the vector" << std::endl;
+                std::cout << "Error! Vehicle #" << v.getID() << " could not be added to the vector" << std::endl;
                 std::this_thread::sleep_for(std::chrono::milliseconds(100));
             }
         }
