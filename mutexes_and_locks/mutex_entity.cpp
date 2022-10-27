@@ -33,7 +33,7 @@ public:
 
 private:
     std::vector<Vehicle> _vehicles; // list of all vehicles waiting to enter this intersection
-    std::mutex _mutex;
+    std::timed_mutex _mutex;
 };
 
 int main() {
