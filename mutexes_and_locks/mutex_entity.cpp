@@ -26,9 +26,17 @@ public:
 
     // typical behaviour methods
     void pushBack(Vehicle &&v) {
-        _mutex.lock();
-        _vehicles.emplace_back(std::move(v)); // data race would cause an exception
-        _mutex.unlock();
+        for (size_t i = 0; i < 3; ++i) {
+            if (_mutex.try_lock_for(std::chrono::milliseconds(100))) {
+                _vehicles.emplace_back(std::move(v));
+                _mutex.unlock();
+                break;
+            }
+            else {
+                std::cout << "Error! Vehicle could not be added to the vector" << std::endl;
+                std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            }
+        }
     }
 
 private:
