@@ -30,6 +30,7 @@ public:
         for (size_t i = 0; i < 3; ++i) {
             if (_mutex.try_lock_for(std::chrono::milliseconds(100))) {
                 _vehicles.emplace_back(std::move(v));
+                std::this_thread::sleep_for(std::chrono::milliseconds(10));
                 _mutex.unlock();
                 break;
             }
