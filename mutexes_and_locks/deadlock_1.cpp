@@ -16,11 +16,10 @@ void divideByNumber(double num, double denom) {
     try {
         // divide num by denom but throw an exception if division by zero is attempted
         if (denom != 0) {
-            mtx.lock();
+            std::lock_guard<std::mutex> lck(mtx);
             result = num / denom;
             std::this_thread::sleep_for(std::chrono::milliseconds(1));
             printResult(denom);
-            mtx.unlock();
         }
         else {
             throw std::invalid_argument("Exception from thread: Division by zero!");
