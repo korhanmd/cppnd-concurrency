@@ -13,13 +13,14 @@ void printResult(int denom) {
 }
 
 void divideByNumber(double num, double denom) {
-    mtx.lock();
     try {
         // divide num by denom but throw an exception if division by zero is attempted
         if (denom != 0) {
+            mtx.lock();
             result = num / denom;
             std::this_thread::sleep_for(std::chrono::milliseconds(1));
             printResult(denom);
+            mtx.unlock();
         }
         else {
             throw std::invalid_argument("Exception from thread: Division by zero!");
@@ -30,7 +31,6 @@ void divideByNumber(double num, double denom) {
         std::cout << e.what() << std::endl;
         return;
     }
-    mtx.unlock();
 }
 
 int main () {
