@@ -3,14 +3,17 @@
 #include <vector>
 #include <future>
 #include <algorithm>
+#include <mutex>
 
 double result;
+std::mutex mtx;
 
 void printResult(int denom) {
     std::cout << "for denom = " << denom << ", the result is " << result << std::endl;
 }
 
 void divideByNumber(double num, double denom) {
+    mtx.lock();
     try {
         // divide num by denom but throw an exception if division by zero is attempted
         if (denom != 0) {
@@ -27,6 +30,7 @@ void divideByNumber(double num, double denom) {
         std::cout << e.what() << std::endl;
         return;
     }
+    mtx.unlock();
 }
 
 int main () {
