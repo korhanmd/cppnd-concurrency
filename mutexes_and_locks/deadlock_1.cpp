@@ -13,13 +13,21 @@ void printResult(int denom) {
 }
 
 void divideByNumber(double num, double denom) {
+    std::unique_lock<std::mutex> lck(mtx);
     try {
         // divide num by denom but throw an exception if division by zero is attempted
         if (denom != 0) {
-            std::lock_guard<std::mutex> lck(mtx);
             result = num / denom;
-            std::this_thread::sleep_for(std::chrono::milliseconds(1));
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
             printResult(denom);
+            lck.unlock();
+
+            // do something outside of the lock
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+            lck.lock();
+            // do something else under the lock
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
         }
         else {
             throw std::invalid_argument("Exception from thread: Division by zero!");
