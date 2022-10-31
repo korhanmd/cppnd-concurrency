@@ -6,20 +6,16 @@ std::mutex mutex1, mutex2;
 
 void ThreadA() {
     // Creates deadlock problem
-    mutex1.lock();
+    std::lock_guard<std::mutex> lock2(mutex2);
     std::cout << "Thread A" << std::endl;
-    mutex2.lock();
-    mutex2.unlock();
-    mutex1.unlock();
+    std::lock_guard<std::mutex> lock1(mutex1);
 }
 
 void ThreadB() {
     // Creates deadlock problem
-    mutex1.lock();
+    std::lock_guard<std::mutex> lock1(mutex1);
     std::cout << "Thread B" << std::endl;
-    mutex2.lock();
-    mutex1.unlock();
-    mutex2.unlock();
+    std::lock_guard<std::mutex> lock2(mutex2);
 }
 
 void ExecuteThreads() {
@@ -29,7 +25,7 @@ void ExecuteThreads() {
     t1.join();
     t2.join();
 
-    std::cout << "Finsihed" << std::endl;
+    std::cout << "Finished" << std::endl;
 }
 
 int main() {
