@@ -6,9 +6,9 @@ std::mutex mutex1, mutex2;
 
 void ThreadA() {
     // Creates deadlock problem
-    mutex2.lock();
-    std::cout << "Thread A" << std::endl;
     mutex1.lock();
+    std::cout << "Thread A" << std::endl;
+    mutex2.lock();
     mutex2.unlock();
     mutex1.unlock();
 }
