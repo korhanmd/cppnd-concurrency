@@ -24,12 +24,15 @@ public:
     }
 
     void pushBack(Vehicle &&v) {
+        // simulate some work
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+        // perform vector modification under the lock
         std::lock_guard<std::mutex> uLock(_mutex);
+
+        // add vehicle to queue
         std::cout << "  Vehicle #" << v.getID() << " will be added to the queue" << std::endl;
         _vehicles.emplace_back(std::move(v));
-
-        // simulate some work
-        std::this_thread::sleep_for(std::chrono::milliseconds(500));
     }
 
 private:
