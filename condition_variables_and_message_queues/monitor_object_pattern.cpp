@@ -64,9 +64,19 @@ int main() {
         futures.emplace_back(std::async(std::launch::async, &WaitingVehicles::pushBack, queue, std::move(v)));
     }
 
+    std::cout << "Collecting results..." << std::endl;
+    while (true) {
+        if (queue->dataIsAvailable()) {
+            Vehicle v = queue->popBack();
+            std::cout << "  Vehicle #" << v.getID() << " has been removed from the queue" << std::endl;
+        }
+    }
+
     std::for_each(futures.begin(), futures.end(), [](std::future<void> &ftr) {
         ftr.wait();
     });
+
+    std::cout << "Finished processing queue" << std::endl;
 
     return 0;
 }
