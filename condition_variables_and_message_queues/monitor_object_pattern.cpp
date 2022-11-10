@@ -23,6 +23,17 @@ public:
         return !_vehicles.empty();
     }
 
+    Vehicle popBack() {
+        // perform vector modification under the lock
+        std::lock_guard<std::mutex> uLock(_mutex);
+
+        // remove last vector element from queue
+        Vehicle v = std::move(_vehicles.back());
+        _vehicles.pop_back();
+
+        return v; // will not be copied due to return value optimization (RVO) in C++
+    }
+
     void pushBack(Vehicle &&v) {
         // simulate some work
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
