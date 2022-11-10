@@ -16,7 +16,7 @@ private:
 
 class WaitingVehicles {
 public:
-    WaitingVehicles() {}
+    WaitingVehicles() : _counter(0) {}
 
     bool dataIsAvailable() {
         std::lock_guard<std::mutex> myLock(_mutex);
@@ -30,6 +30,7 @@ public:
         // remove last vector element from queue
         Vehicle v = std::move(_vehicles.back());
         _vehicles.pop_back();
+        _counter--;
 
         return v; // will not be copied due to return value optimization (RVO) in C++
     }
@@ -44,11 +45,13 @@ public:
         // add vehicle to queue
         std::cout << "  Vehicle #" << v.getID() << " will be added to the queue" << std::endl;
         _vehicles.emplace_back(std::move(v));
+        _counter++;
     }
 
 private:
     std::vector<Vehicle> _vehicles; // list of all vehicles waiting to enter this intersection
     std::mutex _mutex;
+    int _counter;
 };
 
 int main() {
