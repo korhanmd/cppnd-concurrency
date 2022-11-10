@@ -18,6 +18,11 @@ class WaitingVehicles {
 public:
     WaitingVehicles() : _counter(0) {}
 
+    int count() {
+        std::lock_guard<std::mutex> uLock(_mutex);
+        return _counter;
+    }
+
     bool dataIsAvailable() {
         std::lock_guard<std::mutex> myLock(_mutex);
         return !_vehicles.empty();
@@ -67,11 +72,18 @@ int main() {
         futures.emplace_back(std::async(std::launch::async, &WaitingVehicles::pushBack, queue, std::move(v)));
     }
 
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+
     std::cout << "Collecting results..." << std::endl;
     while (true) {
         if (queue->dataIsAvailable()) {
             Vehicle v = queue->popBack();
             std::cout << "  Vehicle #" << v.getID() << " has been removed from the queue" << std::endl;
+
+            if (queue->count() <= 0) {
+                std::this_thread::sleep_for(std::chrono::milliseconds(200));
+                break;
+            }
         }
     }
 
@@ -79,7 +91,7 @@ int main() {
         ftr.wait();
     });
 
-    std::cout << "Finished processing queue" << std::endl;
+    std::cout << "Finished : " << queue->count() << " vehicle(s) left in the queue" << std::endl;
 
     return 0;
 }
