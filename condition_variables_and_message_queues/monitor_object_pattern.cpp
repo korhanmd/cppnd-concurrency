@@ -18,11 +18,9 @@ class WaitingVehicles {
 public:
     WaitingVehicles() {}
 
-    void printIDs() {
-        std::lock_guard<std::mutex> myLock(_mutex); // lock is released when myLock goes out of scope
-        
-        for(auto &v : _vehicles)
-            std::cout << "  Vehicle #" << v.getID() << " is now waiting in the queue" << std::endl;
+    bool dataIsAvailable() {
+        std::lock_guard<std::mutex> myLock(_mutex);
+        return !_vehicles.empty();
     }
 
     void pushBack(Vehicle &&v) {
@@ -55,9 +53,6 @@ int main() {
     std::for_each(futures.begin(), futures.end(), [](std::future<void> &ftr) {
         ftr.wait();
     });
-
-    std::cout << "Collecting results..." << std::endl;
-    queue->printIDs();
 
     return 0;
 }
