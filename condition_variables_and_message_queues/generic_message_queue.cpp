@@ -14,9 +14,9 @@ private:
     int _id;
 };
 
-class WaitingVehicles {
+class MessageQueue {
 public:
-    WaitingVehicles() {}
+    MessageQueue() {}
 
     Vehicle popBack() {
         // perform vector modification under the lock
@@ -51,14 +51,14 @@ private:
 
 int main() {
     // create monitor object as a shared pointer to enable access by multiple threads
-    std::shared_ptr<WaitingVehicles> queue(new WaitingVehicles);
+    std::shared_ptr<MessageQueue> queue(new MessageQueue);
 
     std::cout << "Spawning threads..." << std::endl;
     std::vector<std::future<void>> futures;
     for (int i = 0; i < 10; ++i) {
         // create a new Vehicle instance and move it into the queue
         Vehicle v(i);
-        futures.emplace_back(std::async(std::launch::async, &WaitingVehicles::pushBack, queue, std::move(v)));
+        futures.emplace_back(std::async(std::launch::async, &MessageQueue::pushBack, queue, std::move(v)));
     }
 
     std::cout << "Collecting results..." << std::endl;
