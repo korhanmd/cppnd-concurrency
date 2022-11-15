@@ -17,7 +17,7 @@ private:
 template <class T>
 class MessageQueue {
 public:
-    T popBack() {
+    T receive() {
         // perform vector modification under the lock
         std::unique_lock<std::mutex> uLock(_mutex);
         _cond.wait(uLock, [this] { return !_messages.empty(); }); // pass unique lock to condition variable
@@ -29,7 +29,7 @@ public:
         return msg; // will not be copied due to return value optimization (RVO) in C++
     }
 
-    void pushBack(T &&msg) {
+    void send(T &&msg) {
         // simulate some work                                                                                                                                                                                                       
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
