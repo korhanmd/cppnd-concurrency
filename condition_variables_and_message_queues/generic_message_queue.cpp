@@ -50,21 +50,19 @@ private:
 
 int main() {
     // create monitor object as a shared pointer to enable access by multiple threads
-    std::shared_ptr<MessageQueue<Vehicle>> queue(new MessageQueue<Vehicle>);
+    std::shared_ptr<MessageQueue<int>> queue(new MessageQueue<int>);
 
     std::cout << "Spawning threads..." << std::endl;
     std::vector<std::future<void>> futures;
     for (int i = 0; i < 10; ++i) {
-        // create a new Vehicle instance and move it into the queue
-        Vehicle v(i);
-        futures.emplace_back(std::async(std::launch::async, &MessageQueue<Vehicle>::pushBack, queue, std::move(v)));
+        int message = i;
+        futures.emplace_back(std::async(std::launch::async, &MessageQueue<int>::send, queue, std::move(message)));
     }
 
     std::cout << "Collecting results..." << std::endl;
     while (true) {
-        // popBack wakes up when a new element is available in the queue
-        Vehicle v = queue->popBack();
-        std::cout << "   Vehicle #" << v.getID() << " has been removed from the queue" << std::endl;
+        int message = queue->receive();
+        std::cout << "   Message #" << message << " has been removed from the queue" << std::endl;
     }
 
     std::for_each(futures.begin(), futures.end(), [](std::future<void> &ftr) {
