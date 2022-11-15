@@ -14,23 +14,22 @@ private:
     int _id;
 };
 
+template <class T>
 class MessageQueue {
 public:
-    MessageQueue() {}
-
-    Vehicle popBack() {
+    T popBack() {
         // perform vector modification under the lock
         std::unique_lock<std::mutex> uLock(_mutex);
         _cond.wait(uLock, [this] { return !_vehicles.empty(); }); // pass unique lock to condition variable
 
         // remove last vector element from queue
-        Vehicle v = std::move(_vehicles.back());
+        T v = std::move(_vehicles.back());
         _vehicles.pop_back();
 
         return v; // will not be copied due to return value optimization (RVO) in C++
     }
 
-    void pushBack(Vehicle &&v) {
+    void pushBack(T &&v) {
         // simulate some work                                                                                                                                                                                                       
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
@@ -46,19 +45,19 @@ public:
 private:
     std::mutex _mutex;
     std::condition_variable _cond;
-    std::vector<Vehicle> _vehicles; // list of all vehicles waiting to enter this intersection
+    std::vector<T> _vehicles; // list of all vehicles waiting to enter this intersection
 };
 
 int main() {
     // create monitor object as a shared pointer to enable access by multiple threads
-    std::shared_ptr<MessageQueue> queue(new MessageQueue);
+    std::shared_ptr<MessageQueue<Vehicle>> queue(new MessageQueue<Vehicle>);
 
     std::cout << "Spawning threads..." << std::endl;
     std::vector<std::future<void>> futures;
     for (int i = 0; i < 10; ++i) {
         // create a new Vehicle instance and move it into the queue
         Vehicle v(i);
-        futures.emplace_back(std::async(std::launch::async, &MessageQueue::pushBack, queue, std::move(v)));
+        futures.emplace_back(std::async(std::launch::async, &MessageQueue<Vehicle>::pushBack, queue, std::move(v)));
     }
 
     std::cout << "Collecting results..." << std::endl;
