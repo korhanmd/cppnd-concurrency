@@ -1,6 +1,6 @@
 #include <iostream>
 #include <thread>
-#include <vector>
+#include <queue>
 #include <future>
 #include <mutex>
 #include <algorithm>
@@ -45,7 +45,7 @@ public:
 private:
     std::mutex _mutex;
     std::condition_variable _cond;
-    std::vector<T> _vehicles; // list of all vehicles waiting to enter this intersection
+    std::deque<T> _vehicles;
 };
 
 int main() {
